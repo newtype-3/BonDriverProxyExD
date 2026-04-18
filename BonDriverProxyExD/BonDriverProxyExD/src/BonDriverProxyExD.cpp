@@ -1260,7 +1260,18 @@ DWORD cProxyServerEx::Process()
 					std::vector<stDriver> &vstDriver = DriversMap[(*it)->m_pDriversMapKey];
 					string strBonDriver;
 					WtoUTF8(vstDriver[(*it)->m_iDriverNo].strBonDriver, strBonDriver);
-					len = ::wsprintfA(buf, "%02d: [%s]:[%d] / [%s][%s] / space[%u] ch[%u]\n", num, addr, port, (*it)->m_pDriversMapKey, strBonDriver.c_str(), (*it)->m_dwSpace, (*it)->m_dwChannel);
+					TCHAR decName[256];
+					tstring tstrDecName;
+					string strDecName;
+					if (vstDriver[(*it)->m_iDriverNo].decoderNo == -1) {
+						_tcscpy_s(decName, 256, _T("No Decoder"));
+					}
+					else {
+						_tcscpy_s(decName, 256, DecoderVec[vstDriver[(*it)->m_iDriverNo].decoderNo]->strDecoder);
+					}
+					tstrDecName = decName;
+					WtoUTF8(tstrDecName, strDecName);
+					len = ::wsprintfA(buf, "%02d: [%s]:[%d] / [%s][%s] / space[%u] ch[%u] / decoder[%s] / Lock[%d]\n", num, addr, port, (*it)->m_pDriversMapKey, strBonDriver.c_str(), (*it)->m_dwSpace, (*it)->m_dwChannel, strDecName.c_str(), (*it)->m_bChannelLock);
 					if ((size_t)len >= left)
 					{
 						left += size;
@@ -2302,7 +2313,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT iMsg, WPARAM wParam, LPARAM lParam)
 				_tcscpy_s(decName, 256, DecoderVec[vstDriver[(*it)->m_iDriverNo].decoderNo]->strDecoder);
 			}
 
-			_stprintf_s(buf, 2048, _T("%2d: [%s]:[%d] / [%s][%s] / space[%u] ch[%u] / decoder[%s]"), num, tstrAddr.c_str(), port, tstrDriverMapKey.c_str(), vstDriver[(*it)->m_iDriverNo].strBonDriver, (*it)->m_dwSpace, (*it)->m_dwChannel, decName);
+			_stprintf_s(buf, 2048, _T("%2d: [%s]:[%d] / [%s][%s] / space[%u] ch[%u] / decoder[%s] / Lock[%d]"), num, tstrAddr.c_str(), port, tstrDriverMapKey.c_str(), vstDriver[(*it)->m_iDriverNo].strBonDriver, (*it)->m_dwSpace, (*it)->m_dwChannel, decName, (*it)->m_bChannelLock);
 			TextOut(hDc, 5, 5 + (num * tm.tmHeight), buf, (int)_tcslen(buf));
 
 			num++;

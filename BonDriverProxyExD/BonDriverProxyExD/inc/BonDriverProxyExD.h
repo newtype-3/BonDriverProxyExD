@@ -193,6 +193,7 @@ public:
 	DWORD m_dwChannel;
 	char *m_pDriversMapKey;
 	int m_iDriverNo;
+	BYTE m_bChannelLock;
 #ifdef HAVE_UI
 private:
 #endif
@@ -204,7 +205,6 @@ private:
 	cEvent m_Error;
 	BOOL m_bTunerOpen;
 	HANDLE m_hTsRead;
-	BYTE m_bChannelLock;
 	stTsReaderArg *m_pTsReaderArg;
 	cPacketFifo m_fifoSend;
 	cPacketFifo m_fifoRecv;
