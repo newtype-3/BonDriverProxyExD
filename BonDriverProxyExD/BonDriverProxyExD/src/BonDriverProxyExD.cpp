@@ -1258,7 +1258,9 @@ DWORD cProxyServerEx::Process()
 					}
 					//TCHAR buf[2048]{};
 					std::vector<stDriver> &vstDriver = DriversMap[(*it)->m_pDriversMapKey];
-					len = ::wsprintfA(buf, "%02d: [%s]:[%d] / [%s][%ls] / space[%u] ch[%u]\n", num, addr, port, (*it)->m_pDriversMapKey, vstDriver[(*it)->m_iDriverNo].strBonDriver, (*it)->m_dwSpace, (*it)->m_dwChannel);
+					string strBonDriver;
+					WtoUTF8(vstDriver[(*it)->m_iDriverNo].strBonDriver, strBonDriver);
+					len = ::wsprintfA(buf, "%02d: [%s]:[%d] / [%s][%s] / space[%u] ch[%u]\n", num, addr, port, (*it)->m_pDriversMapKey, strBonDriver.c_str(), (*it)->m_dwSpace, (*it)->m_dwChannel);
 					if ((size_t)len >= left)
 					{
 						left += size;
