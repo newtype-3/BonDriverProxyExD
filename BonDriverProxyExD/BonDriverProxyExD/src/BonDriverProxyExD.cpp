@@ -1221,7 +1221,6 @@ DWORD cProxyServerEx::Process()
 
 			case eGetClientInfo:
 			{
-				/* クライアント側でこのコマンドを使用していないのでコメント化
 				union {
 					SOCKADDR_STORAGE ss;
 					SOCKADDR_IN si4;
@@ -1259,7 +1258,7 @@ DWORD cProxyServerEx::Process()
 					}
 					//TCHAR buf[2048]{};
 					std::vector<stDriver> &vstDriver = DriversMap[(*it)->m_pDriversMapKey];
-					len = ::wsprintf(buf, _T("%02d: [%s]:[%d] / [%s][%s] / space[%u] ch[%u]\n"), num, addr, port, (*it)->m_pDriversMapKey, vstDriver[(*it)->m_iDriverNo].strBonDriver, (*it)->m_dwSpace, (*it)->m_dwChannel);
+					len = ::wsprintfA(buf, "%02d: [%s]:[%d] / [%s][%ls] / space[%u] ch[%u]\n", num, addr, port, (*it)->m_pDriversMapKey, vstDriver[(*it)->m_iDriverNo].strBonDriver, (*it)->m_dwSpace, (*it)->m_dwChannel);
 					if ((size_t)len >= left)
 					{
 						left += size;
@@ -1298,7 +1297,6 @@ DWORD cProxyServerEx::Process()
 				m_fifoSend.Push(ph);
 				if (exinfo != NULL)
 					delete[] exinfo;
-				*/
 
 				break;
 			}
